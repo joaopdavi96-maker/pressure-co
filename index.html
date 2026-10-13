@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+
+<!-- ================================================================
+     ⚠ REEMPLAZAR ANTES DE PUBLICAR (Colombia):
+       · Google Analytics  → G-XXXXXXXXXX  (crear nueva propiedad CO)
+       · Meta Pixel        → XXXXXXXXXXXXXXX (crear nuevo Pixel CO) + CAPI
+       · VSL1 / VSL2       → embeds de Tynk.ai en ESPAÑOL (CO)
+       · CHECKOUT_URL      → link del checkout (Hotmart/Kiwify/etc.)
+     ================================================================ -->
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX'); /* ⚠ GA de Colombia */
+</script>
+<!-- End Google tag -->
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'XXXXXXXXXXXXXXX'); /* ⚠ Pixel de Colombia */
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Diagnóstico Gatillo Vagal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<!-- Reproductor VSL (Tynk.Ai) — conexión anticipada para carga rápida -->
+<link rel="preconnect" href="https://play.tynk.ai">
+<link rel="dns-prefetch" href="https://play.tynk.ai">
+<style>
+  :root{
+    --bg:#EEF3F5; --surface:#FFFFFF; --ink:#0C2733; --ink-soft:#54707C; --ink-faint:#8AA1AB;
+    --line:#DBE6EA; --teal:#0FA69F; --teal-deep:#0A7C77; --teal-wash:#E6F5F3;
+    --alert:#E85D38; --alert-strong:#D22E24; --alert-wash:#FCEAE4; --amber:#F0A93B;
+    --shadow:0 10px 40px -12px rgba(12,39,51,.28); --shadow-sm:0 4px 14px -6px rgba(12,39,51,.22);
+    --radius:18px; --radius-sm:13px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overscroll-behavior:none}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:17px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;display:flex;justify-content:center;
+    background-image:radial-gradient(circle at 50% -10%, #F6FAFB 0%, var(--bg) 55%);}
+  .app{width:100%;max-width:540px;min-height:100dvh;background:var(--surface);display:flex;flex-direction:column;
+    position:relative;overflow:hidden;box-shadow:var(--shadow);}
+  @media(min-width:560px){.app{margin:22px 0;min-height:calc(100dvh - 44px);border-radius:26px}}
+
+  /* MONITOR */
+  .monitor{padding:14px 20px 12px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#0C2733 0%,#123543 100%);color:#fff;position:relative;z-index:5;flex-shrink:0;}
+  .monitor.hidden{display:none}
+  .monitor-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+  .brand{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk';font-weight:600;font-size:14.5px;letter-spacing:.2px}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--teal);animation:beat 1.6s infinite}
+  @keyframes beat{0%{box-shadow:0 0 0 0 rgba(15,166,159,.6)}70%{box-shadow:0 0 0 7px rgba(15,166,159,0)}100%{box-shadow:0 0 0 0 rgba(15,166,159,0)}}
+  .step-tag{font-family:'IBM Plex Mono';font-size:11.5px;color:#8FB6BE;letter-spacing:.5px}
+  .ecg{height:30px;width:100%;margin:2px 0 10px;overflow:hidden;position:relative;opacity:.9}
+  .ecg svg{width:200%;height:100%;display:block;animation:scan 4s linear infinite}
+  @keyframes scan{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ecg path{fill:none;stroke:var(--teal);stroke-width:2;filter:drop-shadow(0 0 4px rgba(15,166,159,.6))}
+  .monitor.alert .ecg path{stroke:var(--alert);filter:drop-shadow(0 0 5px rgba(232,93,56,.7))}
+  .monitor.alert .ecg svg{animation-duration:1.5s}
+  .monitor.alert .brand .dot{background:var(--alert)}
+  .gauge-row{display:flex;align-items:center;gap:11px}
+  .gauge-label{font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:1px;color:#9CC0C7;white-space:nowrap;text-transform:uppercase}
+  .gauge{flex:1;height:8px;border-radius:6px;background:rgba(255,255,255,.13);overflow:hidden;position:relative}
+  .gauge-fill{height:100%;width:8%;border-radius:6px;background:linear-gradient(90deg,var(--teal) 0%,var(--amber) 62%,var(--alert-strong) 100%);transition:width .7s cubic-bezier(.22,1,.36,1)}
+  .gauge-val{font-family:'IBM Plex Mono';font-weight:600;font-size:12.5px;color:#fff;min-width:34px;text-align:right}
+
+  .screens{flex:1;display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  .screen{display:none;flex-direction:column;flex:1;padding:26px 22px 30px;animation:fade .45s ease}
+  .screen.active{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .qmeta{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .qnum{font-family:'IBM Plex Mono';font-size:12px;font-weight:600;color:var(--teal-deep);background:var(--teal-wash);padding:4px 9px;border-radius:7px;letter-spacing:.5px}
+  .qblock{font-family:'IBM Plex Mono';font-size:11px;color:var(--ink-faint);letter-spacing:1px;text-transform:uppercase}
+  .qtitle{font-family:'Space Grotesk';font-weight:600;font-size:25px;line-height:1.22;letter-spacing:-.4px;margin-bottom:8px}
+  .qtitle .em{color:var(--alert-strong)}
+  .qsub{color:var(--ink-soft);font-size:15.5px;margin-bottom:20px;line-height:1.45}
+  .options{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+  .opt{display:flex;align-items:center;gap:13px;padding:16px;border:2px solid var(--line);border-radius:var(--radius-sm);
+    background:var(--surface);cursor:pointer;text-align:left;width:100%;font-family:inherit;font-size:17px;color:var(--ink);
+    font-weight:500;line-height:1.32;transition:border-color .18s,background .18s,transform .12s;}
+  .opt:hover{border-color:#B9D2D8}
+  .opt:active{transform:scale(.99)}
+  .opt .oe{font-size:22px;line-height:1;flex-shrink:0;width:26px;text-align:center}
+  .opt .ck{margin-left:auto;width:22px;height:22px;border:2px solid var(--line);border-radius:7px;flex-shrink:0;position:relative;transition:.18s}
+  .opt.selected{border-color:var(--teal);background:var(--teal-wash)}
+  .opt.selected .ck{background:var(--teal);border-color:var(--teal)}
+  .opt.selected .ck::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  .opt.alertopt.selected{border-color:var(--alert);background:var(--alert-wash)}
+  .opt.alertopt.selected .ck{background:var(--alert);border-color:var(--alert)}
+  .hint{font-size:13px;color:var(--ink-faint);margin-top:14px;font-family:'IBM Plex Mono';letter-spacing:.3px}
+
+  .field{margin-top:6px}
+  .field label{display:block;font-weight:600;font-size:15px;margin-bottom:8px;color:var(--ink)}
+  .field input{width:100%;padding:15px 16px;border:2px solid var(--line);border-radius:var(--radius-sm);font-family:inherit;font-size:17px;color:var(--ink);background:var(--surface);transition:border-color .18s;}
+  .field input:focus{outline:none;border-color:var(--teal)}
+  .field + .field{margin-top:16px}
+  .slider-wrap{margin-top:10px}
+  .slider-val{font-family:'IBM Plex Mono';font-weight:600;font-size:34px;color:var(--teal-deep);text-align:center;margin-bottom:6px}
+  .slider-val .u{font-size:16px;color:var(--ink-faint);margin-left:4px}
+  input[type=range]{-webkit-appearance:none;width:100%;height:8px;border-radius:6px;background:var(--line);outline:none;touch-action:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:50%;background:var(--teal);border:4px solid #fff;box-shadow:var(--shadow-sm);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:30px;height:30px;border-radius:50%;background:var(--teal);border:4px solid #fff;cursor:pointer}
+  .range-ends{display:flex;justify-content:space-between;font-family:'IBM Plex Mono';font-size:12px;color:var(--ink-faint);margin-top:6px}
+  .sexrow{display:flex;gap:11px;margin-top:4px}
+  .sexrow .opt{justify-content:center;flex-direction:column;gap:7px;padding:20px 10px;text-align:center}
+  .sexrow .opt .oe{font-size:30px;width:auto}
+  .sexrow .opt .ck{display:none}
+
+  .cta{margin-top:auto;padding-top:22px}
+  .btn{width:100%;padding:18px;border:none;border-radius:14px;cursor:pointer;font-family:'Space Grotesk';font-weight:600;
+    font-size:18px;letter-spacing:.2px;background:var(--teal);color:#fff;transition:transform .12s,box-shadow .2s,background .2s;
+    box-shadow:0 10px 24px -10px rgba(15,166,159,.75);display:flex;align-items:center;justify-content:center;gap:9px;}
+  .btn:hover{background:var(--teal-deep)}
+  .btn:active{transform:translateY(1px)}
+  .btn:disabled{background:#C4D4D9;box-shadow:none;cursor:not-allowed;color:#fff}
+  .btn.alert{background:var(--alert);box-shadow:0 10px 26px -10px rgba(232,93,56,.8)}
+  .btn.alert:hover{background:var(--alert-strong)}
+  .btn.green{background:#1FAE5A;box-shadow:0 10px 26px -10px rgba(31,174,90,.85)}
+  .btn.green:hover{background:#178F49}
+  .btn.green.pulse{animation:btnpulseGreen 2s infinite}
+  @keyframes btnpulseGreen{0%{box-shadow:0 10px 26px -10px rgba(31,174,90,.85),0 0 0 0 rgba(31,174,90,.5)}70%{box-shadow:0 10px 26px -10px rgba(31,174,90,.85),0 0 0 14px rgba(31,174,90,0)}100%{box-shadow:0 10px 26px -10px rgba(31,174,90,.85),0 0 0 0 rgba(31,174,90,0)}}
+  .btn.yt{background:#FF0000;box-shadow:0 10px 26px -10px rgba(255,0,0,.85)}
+  .btn.yt:hover{background:#CC0000}
+  .btn.yt .yt-play{display:inline-flex;align-items:center;justify-content:center;width:34px;height:24px;background:#fff;border-radius:6px;margin-right:2px}
+  .btn.yt .yt-play::after{content:"";border-left:11px solid #FF0000;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+  .btn.yt.pulse{animation:btnpulseYT 2s infinite}
+  @keyframes btnpulseYT{0%{box-shadow:0 10px 26px -10px rgba(255,0,0,.85),0 0 0 0 rgba(255,0,0,.5)}70%{box-shadow:0 10px 26px -10px rgba(255,0,0,.85),0 0 0 14px rgba(255,0,0,0)}100%{box-shadow:0 10px 26px -10px rgba(255,0,0,.85),0 0 0 0 rgba(255,0,0,0)}}
+  .btn.big{padding:20px;font-size:19px}
+  .btn-arrow{font-size:20px}
+  .btn.pulse{animation:btnpulse 2s infinite}
+  @keyframes btnpulse{0%{box-shadow:0 10px 26px -10px rgba(232,93,56,.8),0 0 0 0 rgba(232,93,56,.5)}70%{box-shadow:0 10px 26px -10px rgba(232,93,56,.8),0 0 0 14px rgba(232,93,56,0)}100%{box-shadow:0 10px 26px -10px rgba(232,93,56,.8),0 0 0 0 rgba(232,93,56,0)}}
+
+  /* INTRO */
+  .intro{justify-content:center;text-align:center;padding:38px 24px}
+  .intro .badge{display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono';font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--teal-deep);background:var(--teal-wash);padding:7px 13px;border-radius:20px;margin:0 auto 22px}
+  .intro h1{font-family:'Space Grotesk';font-weight:700;font-size:33px;line-height:1.14;letter-spacing:-.8px;margin-bottom:16px}
+  .intro h1 .em{color:var(--alert-strong)}
+  .intro p{color:var(--ink-soft);font-size:16.5px;max-width:400px;margin:0 auto 8px}
+  .intro .heartwrap{margin:6px auto 26px}
+  .trust{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;font-size:13px;color:var(--ink-faint);font-family:'IBM Plex Mono'}
+  .trust .dot{width:6px;height:6px;border-radius:50%;background:var(--teal)}
+  .med-note{font-size:11.5px;color:var(--ink-faint);line-height:1.5;max-width:420px;margin:18px auto 0;padding-top:14px;border-top:1px solid var(--line)}
+
+  /* BREAK */
+  .brk{padding:28px 24px 30px}
+  .brk-illus{margin:0 auto 6px;min-height:120px;display:flex;align-items:center;justify-content:center}
+  .brk-stage{display:flex;flex-direction:column;gap:0}
+  .kicker{font-family:'IBM Plex Mono';font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;display:inline-flex;align-items:center;gap:8px}
+  .brk.calm .kicker{color:var(--teal-deep)}
+  .brk.warn .kicker{color:var(--alert-strong)}
+  .brk h2{font-family:'Space Grotesk';font-weight:700;font-size:29px;line-height:1.16;letter-spacing:-.6px;margin-bottom:16px}
+  .brk h2 .em{color:var(--alert-strong)}
+  .brk p{color:var(--ink-soft);font-size:16.5px;line-height:1.55;margin-bottom:15px}
+  .brk p .hl{color:var(--ink);font-weight:600}
+  .brk p .hla{color:var(--alert-strong);font-weight:600}
+  .statcard{background:var(--ink);color:#fff;border-radius:var(--radius);padding:20px;margin:6px 0 18px;position:relative;overflow:hidden}
+  .statcard .big{font-family:'IBM Plex Mono';font-weight:600;font-size:40px;line-height:1;color:var(--amber)}
+  .statcard .lbl{font-size:14px;color:#B7CDD4;margin-top:8px;line-height:1.4}
+  .counter{display:inline-flex;align-items:center;gap:9px;font-family:'IBM Plex Mono';font-size:13px;color:var(--teal-deep);background:var(--teal-wash);padding:9px 14px;border-radius:22px;margin-bottom:6px}
+  .counter .lv{width:8px;height:8px;border-radius:50%;background:var(--teal);animation:beat 1.6s infinite}
+  .possbar{background:var(--teal-wash);border-radius:var(--radius);padding:20px;margin:8px 0 18px}
+  .possbar .track{height:10px;background:#fff;border-radius:6px;overflow:hidden;margin-bottom:10px}
+  .possbar .fill{height:100%;width:0;background:linear-gradient(90deg,var(--alert-strong),var(--amber) 55%,var(--teal));border-radius:6px;transition:width 1.4s cubic-bezier(.22,1,.36,1)}
+  .possbar .cap{display:flex;justify-content:space-between;font-family:'IBM Plex Mono';font-size:11.5px;color:var(--ink-soft)}
+  .testi{border:1px solid var(--line);border-radius:14px;padding:16px 17px;margin-bottom:12px;background:#fff;box-shadow:0 6px 18px -14px rgba(12,74,71,.4)}
+  .testi .thead{display:flex;align-items:center;gap:12px;margin-bottom:11px}
+  .testi .photo{width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;background:linear-gradient(135deg,var(--teal),var(--teal-deep));display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Space Grotesk';font-weight:600;font-size:18px;border:2px solid #fff;box-shadow:0 2px 8px -2px rgba(0,0,0,.2)}
+  .testi .tmeta{flex:1;min-width:0}
+  .testi .tname{font-family:'Space Grotesk';font-weight:600;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:6px}
+  .testi .stars{color:#F5A623;font-size:14px;letter-spacing:1px;margin-top:3px}
+  .testi .stars .sub{font-family:'IBM Plex Mono';font-size:10.5px;color:var(--ink-faint);margin-left:6px;letter-spacing:0}
+  .testi .txt{font-size:14.5px;color:var(--ink);line-height:1.55}
+
+  /* progressive reveal + loading */
+  .loadrow{margin:4px 0 4px}
+  .loadlbl{font-family:'IBM Plex Mono';font-size:12.5px;color:var(--ink-faint);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .loadlbl .sp{width:13px;height:13px;border:2px solid var(--teal-wash);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loadtrack{height:6px;background:#EAF1F3;border-radius:5px;overflow:hidden}
+  .loadfill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));border-radius:5px}
+  .reveal{opacity:0;transform:translateY(9px);transition:opacity .5s ease,transform .5s ease}
+  .reveal.in{opacity:1;transform:none}
+  .brk-cta{margin-top:14px;opacity:0;transform:translateY(9px);transition:.5s;pointer-events:none}
+  .brk-cta.in{pointer-events:auto}
+  .brk-cta.in{opacity:1;transform:none}
+
+  /* illustrations */
+  .il-bar{animation:grow 1.1s ease forwards;transform-origin:bottom}
+  @keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+  .il-pulse{animation:ilp 1.8s ease-in-out infinite}
+  @keyframes ilp{0%,100%{opacity:.35}50%{opacity:1}}
+  .il-ring{transform-origin:center;animation:ring 3s ease-in-out infinite}
+  @keyframes ring{0%,100%{transform:scale(.85);opacity:.7}50%{transform:scale(1);opacity:.25}}
+  .il-shake{animation:shake 3s ease-in-out infinite}
+  @keyframes shake{0%,92%,100%{transform:rotate(0)}94%{transform:rotate(-9deg)}96%{transform:rotate(9deg)}98%{transform:rotate(-6deg)}}
+  .il-dash{stroke-dasharray:4 5;animation:dash 14s linear infinite}
+  @keyframes dash{to{stroke-dashoffset:-200}}
+
+  /* VSL */
+  .vsl{justify-content:center;text-align:center;padding:30px 22px}
+  .vsl .kicker2{font-family:'IBM Plex Mono';font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal-deep);margin-bottom:14px}
+  .vsl h2{font-family:'Space Grotesk';font-weight:600;font-size:23px;line-height:1.25;margin-bottom:18px;letter-spacing:-.3px}
+  .vslframe{position:relative;width:100%;aspect-ratio:3/4;border-radius:var(--radius);overflow:hidden;margin-bottom:8px;background:#0C2733;box-shadow:var(--shadow-sm)}
+  /* VSL2: el botón CTA de Tynk aparece DENTRO del iframe, debajo del video.
+     Por eso este frame es más alto que el video 3:4 — abre espacio para que el botón no quede "atrapado".
+     Si sobra/falta espacio, ajuste este aspect-ratio (menor = más alto). */
+  .vslframe.vsl-cta{aspect-ratio:5/8}
+  .vslframe iframe{width:100%;height:100%;border:0;display:block}
+  .vsl-lock{display:flex;align-items:center;justify-content:center;gap:10px;font-family:'IBM Plex Mono';font-size:13px;color:var(--ink-faint);text-align:center;padding:16px 12px;line-height:1.4}
+  .vsl-lock .lk-sp{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--teal);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
+  .reveal-btn{animation:revealbtn .5s cubic-bezier(.22,1,.36,1)}
+  @keyframes revealbtn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  /* CALC */
+  .calc{justify-content:center;text-align:center;padding:40px 26px}
+  .calc h2{font-family:'Space Grotesk';font-weight:600;font-size:24px;margin-bottom:8px}
+  .calc .sub{color:var(--ink-soft);font-size:15px;margin-bottom:30px}
+  .ring{width:130px;height:130px;margin:0 auto 30px;position:relative}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono';font-weight:600;font-size:30px;color:var(--teal-deep)}
+  .calc-steps{text-align:left;max-width:350px;margin:0 auto;display:flex;flex-direction:column;gap:13px}
+  .cstep{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--ink-faint);opacity:.4;transition:.4s}
+  .cstep.done{opacity:1;color:var(--ink)}
+  .cstep .ci{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.4s}
+  .cstep.done .ci{background:var(--teal);border-color:var(--teal)}
+  .cstep.done .ci::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-2px}
+
+  /* RESULT */
+  .result{padding:0}
+  .result-hero{background:linear-gradient(165deg,#0C2733 0%,#15414F 100%);color:#fff;padding:34px 24px 30px;text-align:center;position:relative;overflow:hidden}
+  .result-hero::before{content:"";position:absolute;top:-40%;left:-20%;width:140%;height:140%;background:radial-gradient(circle,rgba(232,93,56,.20),transparent 55%)}
+  .result-hero .rk{font-family:'IBM Plex Mono';font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#9CC0C7;margin-bottom:18px;position:relative}
+  .dial{width:190px;height:110px;margin:0 auto 14px;position:relative}
+  .dial .needle{position:absolute;bottom:8px;left:50%;width:3px;height:78px;background:var(--alert);transform-origin:bottom center;transform:translateX(-50%) rotate(-52deg);border-radius:3px;box-shadow:0 0 10px rgba(232,93,56,.8);transition:transform 1.6s cubic-bezier(.34,1.35,.5,1)}
+  .dial .hub{position:absolute;bottom:2px;left:50%;width:16px;height:16px;background:#fff;border-radius:50%;transform:translateX(-50%)}
+  .level-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Space Grotesk';font-weight:700;font-size:15px;letter-spacing:.5px;background:var(--alert);color:#fff;padding:8px 16px;border-radius:22px;position:relative;text-transform:uppercase;animation:beat 1.8s infinite}
+  .result-hero .idx{font-family:'IBM Plex Mono';font-weight:600;font-size:15px;color:#fff;margin-top:14px;position:relative}
+  .result-hero .idx b{color:var(--amber);font-size:19px}
+  .result-body{padding:28px 24px 20px}
+  .result-body .greet{font-family:'Space Grotesk';font-weight:600;font-size:22px;line-height:1.25;margin-bottom:16px;letter-spacing:-.3px}
+  .result-body p{color:var(--ink-soft);font-size:16px;line-height:1.58;margin-bottom:15px}
+  .result-body p .hl{color:var(--ink);font-weight:600}
+  .result-body p .hla{color:var(--alert-strong);font-weight:600}
+  .databox{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:6px 0 20px}
+  .databox .drow{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;font-size:14.5px;border-bottom:1px solid var(--line)}
+  .databox .drow:last-child{border-bottom:none}
+  .databox .drow .k{color:var(--ink-soft);display:flex;align-items:center;gap:8px}
+  .databox .drow .v{font-family:'IBM Plex Mono';font-weight:600;color:var(--ink)}
+  .databox .drow .v.hi{color:var(--alert-strong)}
+  .sectlabel{font-family:'IBM Plex Mono';font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--alert-strong);margin:26px 0 12px;display:flex;align-items:center;gap:8px}
+  .sectlabel::before{content:"";width:22px;height:2px;background:var(--alert)}
+  .futurebox{background:linear-gradient(165deg,#2A1512,#3A1A15);color:#fff;border-radius:var(--radius);padding:22px;margin:4px 0 20px;position:relative;overflow:hidden}
+  .futurebox h3{font-family:'Space Grotesk';font-weight:600;font-size:19px;margin-bottom:14px;color:#fff}
+  .futurebox p{color:#E9C9C0;font-size:15.5px;line-height:1.55;margin-bottom:12px}
+  .futurebox p .w{color:#fff;font-weight:600}
+  .savior{text-align:center;margin:26px 0 8px}
+  .savior .lead{font-family:'Space Grotesk';font-weight:700;font-size:23px;line-height:1.25;letter-spacing:-.4px;margin-bottom:8px}
+  .savior .lead .em{color:var(--teal-deep)}
+  .savior .sub{color:var(--ink-soft);font-size:15.5px;margin-bottom:18px}
+  .vsl2page{padding:26px 24px 40px}
+  .vsl2wrap{max-width:520px;margin:0 auto;text-align:center}
+  .vsl2page .kicker2{font-family:'IBM Plex Mono';font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--teal-deep);margin-bottom:12px}
+  .vsl2h{font-family:'Space Grotesk';font-weight:700;font-size:26px;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px}
+  .vsl2sub{color:var(--ink-soft);font-size:15.5px;line-height:1.5;margin-bottom:20px}
+  .vsl2page .vslframe{margin-bottom:14px}
+  .vsl2page .final-cta{padding:0}
+  .urgency{display:flex;align-items:center;justify-content:center;gap:12px;background:var(--ink);color:#fff;border-radius:12px;padding:13px 16px;margin:18px 0 6px}
+  .urgency .clockic{font-size:20px}
+  .urgency .utxt{font-size:13px;color:#B7CDD4;line-height:1.35;text-align:left}
+  .urgency .utime{font-family:'IBM Plex Mono';font-weight:600;font-size:22px;color:var(--amber);margin-left:auto}
+  .final-cta{padding:6px 24px 30px}
+  .cta-sub{text-align:center;font-family:'IBM Plex Mono';font-size:12px;color:var(--ink-faint);margin-top:14px}
+  .disc{font-size:11.5px;color:var(--ink-faint);line-height:1.6;text-align:center;margin:24px auto 0;max-width:460px;padding-top:16px;border-top:1px solid var(--line)}
+
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="monitor hidden" id="monitor">
+    <div class="monitor-top">
+      <div class="brand"><span class="dot"></span> Monitor Gatillo Vagal</div>
+      <div class="step-tag" id="stepTag">ANÁLISIS 00/30</div>
+    </div>
+    <div class="ecg"><svg viewBox="0 0 400 30" preserveAspectRatio="none"><path d="M0,15 L40,15 L48,15 L54,4 L60,26 L66,15 L110,15 L118,15 L124,8 L130,22 L136,15 L200,15 L240,15 L248,15 L254,4 L260,26 L266,15 L310,15 L318,15 L324,8 L330,22 L336,15 L400,15"/></svg></div>
+    <div class="gauge-row"><span class="gauge-label">Nivel de alerta</span><div class="gauge"><div class="gauge-fill" id="gaugeFill"></div></div><span class="gauge-val" id="gaugeVal">08%</span></div>
+  </div>
+  <div class="screens" id="screens"></div>
+</div>
+
+<script>
+const STATE = { answers:{}, score:8 };
+
+/* ===== Helpers de personalización (leen las respuestas reales) =====
+   Evitan afirmar en los breaks/resultado cosas que la persona no respondió. */
+function gvK(id){ const a=STATE.answers[id]; return (a&&typeof a==='object'&&a.k!=null)?a.k:null; } // single-choice: índice elegido
+function gvArr(id){ const a=STATE.answers[id]; return Array.isArray(a)?a:[]; }                        // multi: lista de textos
+function gvSalCut(){ const k=gvK('q2'); return k!=null && k!==3; }                                   // q2: le bajó a la sal (no=3)
+function gvList(arr, fallback){ if(!arr.length) return fallback; if(arr.length===1) return arr[0]; return arr.slice(0,-1).join(', ')+' y '+arr[arr.length-1]; }
+
+const FLOW = [
+  {type:'intro'},
+
+  {type:'q', id:'q1', block:'Síntoma', num:1, kind:'single', emoji:'🩺', title:'¿Cuál de estos es su caso hoy?',
+   opts:[{t:'Ya tengo diagnóstico de tensión alta',e:'📋',s:4},{t:'Mi tensión vive "en el límite" (12/8, 13/8...)',e:'⚠️',s:4},{t:'El médico me habló de prehipertensión',e:'🔔',s:3},{t:'Todavía no sé, pero sospecho',e:'🤔',s:2}]},
+  {type:'q', id:'q2', block:'Síntoma', num:2, kind:'single', emoji:'🧂', title:'¿Ya le bajó o le redujo la sal a su comida?',
+   opts:[{t:'Sí, le bajé bastante',e:'✅',s:3},{t:'Le quité casi todo — como sin gracia',e:'😔',s:4},{t:'La reduje un poco',e:'🤏',s:2},{t:'No',e:'🙅',s:1}]},
+  {type:'q', id:'q3', block:'Síntoma', num:3, kind:'single', emoji:'📉', title:'Haga lo que haga por cuidarse, ¿su tensión se queda controlada… o vuelve a subir?',
+   opts:[{t:'No. Siguió prácticamente igual',e:'😞',s:5,alert:true},{t:'Mejoró un poco, pero vuelve a subir',e:'🔁',s:4,alert:true},{t:'Mejoró de verdad',e:'🙂',s:1},{t:'Nunca la controlé bien',e:'🤷',s:2}]},
+  {type:'q', id:'q4', block:'Síntoma', num:4, kind:'single', emoji:'📈', title:'¿Con qué frecuencia su tensión sube "de la nada", sin que usted haya hecho nada malo?',
+   opts:[{t:'Toda la semana',e:'😰',s:5,alert:true},{t:'Algunas veces al mes',e:'😕',s:4},{t:'De vez en cuando',e:'😐',s:2},{t:'Rara vez',e:'🙂',s:1}]},
+  {type:'q', id:'q5', block:'Síntoma', num:5, kind:'single', emoji:'😮‍💨', title:'¿Le ha pasado esto: hacer todo bien y aun así llevarse un susto al medir?',
+   opts:[{t:'Sí, y es demasiado frustrante',e:'😩',s:5,alert:true},{t:'Sí, y ya me acostumbré',e:'😔',s:4},{t:'A veces',e:'😐',s:2},{t:'No',e:'🙂',s:1}]},
+
+  {type:'break', id:'break1', variant:'calm', illus:'bars', gaugeTo:16,
+   cta:'Continuar', ctaAlert:false,
+   steps:[
+     {load:'Registrando sus primeras 5 respuestas', dur:1000, reveal:`<div class="kicker">✓ Primeras variables recogidas</div><h2>Sus primeras respuestas ya dicen mucho.</h2>`},
+     {load:'Comparando con otros perfiles parecidos', dur:1200, reveal:(a)=>{
+        const sal=gvSalCut(); const q3=gvK('q3');
+        let lead = sal ? 'usted ya le bajó a la sal' : 'usted ya empezó a prestarle atención a su tensión';
+        let tail;
+        if(q3===0) tail='y aun así siguió casi igual';
+        else if(q3===1) tail='y aun así vuelve a subir';
+        else if(q3===3) tail='pero nunca logró controlarla del todo';
+        else tail='y aun así siente que algo no cuadra';
+        return `<p>La mayoría de las personas que llega hasta aquí responde parecido a usted: <span class="hl">${lead}, ${tail}</span>. No es casualidad.</p>`;
+     }},
+     {load:'Trazando su patrón inicial', dur:1000, reveal:`<p>Guarde esa sensación. Tiene explicación — y vamos a llegar a ella.</p>`},
+   ]},
+
+  {type:'q', id:'q6', block:'Intentos', num:6, kind:'multi', emoji:'🔄', title:'¿Qué ha intentado para controlar su tensión?', sub:'Puede marcar más de una.',
+   opts:[{t:'Bajarle a la sal',e:'🧂',s:1},{t:'Bajar de peso',e:'⚖️',s:1},{t:'Caminar / hacer ejercicio',e:'🚶',s:1},{t:'Té, limón, ajo, remolacha, jugo natural',e:'🍵',s:1},{t:'Dejar de tomar trago / fumar',e:'🚭',s:1},{t:'Cambiar o subir la dosis del medicamento',e:'💊',s:2},{t:'Nada de eso lo resolvió del todo',e:'😮‍💨',s:3,alert:true}]},
+  {type:'q', id:'q7', block:'Intentos', num:7, kind:'single', emoji:'💊', title:'¿Su médico ya ha tenido que subir la dosis o cambiar/agregar un medicamento?',
+   opts:[{t:'Sí, más de una vez',e:'📈',s:5,alert:true},{t:'Sí, una vez',e:'➕',s:4},{t:'Todavía no, pero ya me advirtió que puede pasar',e:'⚠️',s:3},{t:'No',e:'🙂',s:2}]},
+  {type:'q', id:'q8', block:'Intentos', num:8, kind:'single', emoji:'🧬', title:'Cuando escucha "es genético, es de familia", ¿cómo se siente?',
+   opts:[{t:'Sin salida — como si no hubiera nada que hacer',e:'😞',s:4,alert:true},{t:'Con rabia, creo que hay otra explicación',e:'😤',s:3},{t:'No creo mucho en eso',e:'🤨',s:2},{t:'Nunca me lo han dicho',e:'🤷',s:1}]},
+  {type:'q', id:'q9', block:'Intentos', num:9, kind:'single', emoji:'❤️‍🩹', title:'¿Alguien de su familia tuvo un derrame, un infarto o problemas del corazón?',
+   opts:[{t:'Sí, y eso me asusta',e:'😨',s:5,alert:true},{t:'Sí, pero prefiero no pensar en eso',e:'😔',s:4,alert:true},{t:'No',e:'🙂',s:1},{t:'No sé',e:'🤷',s:2}]},
+  {type:'q', id:'q10', block:'Intentos', num:10, kind:'single', emoji:'🎈', title:'¿Ha sentido que solo está "tapando el problema" — sosteniendo el número, sin resolver la causa?',
+   opts:[{t:'Sí, exactamente eso',e:'😩',s:5,alert:true},{t:'A veces lo pienso',e:'😕',s:3},{t:'Confío en que el medicamento lo resuelve',e:'🙂',s:2},{t:'Nunca lo había pensado así',e:'🤔',s:2}]},
+  {type:'q', id:'q11', block:'Intentos', num:11, kind:'single', emoji:'🔎', title:'Si existiera una causa real de su tensión que nadie le ha explicado, ¿le gustaría saber cuál es?',
+   opts:[{t:'Sí, quiero saber ya',e:'🙌',s:3},{t:'Sí, aunque confieso que estoy con dudas',e:'😒',s:2},{t:'Tal vez',e:'🤔',s:1}]},
+
+  {type:'break', id:'break2', variant:'warn', illus:'hose', gaugeTo:38,
+   cta:'Quiero ver la causa real', ctaAlert:true,
+   steps:[
+     {load:'Cruzando todo lo que ya intentó', dur:1200, reveal:`<div class="kicker">⚠ Punto de quiebre</div><h2>Usted no fracasó. Le apuntó al <span class="em">blanco equivocado</span>.</h2>`},
+     {load:'Descartando las causas que ya combatió', dur:1300, reveal:(a)=>{
+        const sal=gvSalCut(); const q6=gvArr('q6'); const q7=gvK('q7');
+        const tried=[];
+        if(sal) tried.push('le bajó a la sal');
+        if(q6.some(t=>/peso/i.test(t))) tried.push('intentó bajar de peso');
+        if(q6.some(t=>/camin|ejercicio/i.test(t))) tried.push('salió a caminar');
+        if(q6.some(t=>/té|limón|ajo|remolacha|jugo/i.test(t))) tried.push('probó remedios caseros');
+        if(q6.some(t=>/trago|fumar/i.test(t))) tried.push('dejó el trago o el cigarrillo');
+        if(q7===0||q7===1) tried.push('se toma el medicamento a la hora');
+        else if(q6.some(t=>/dosis|medicamento/i.test(t))) tried.push('ajustó el medicamento');
+        const listado = gvList(tried, 'ha intentado hacer las cosas bien');
+        const donde = sal ? 'nunca estuvo en su plato' : 'nunca estuvo donde usted la venía buscando';
+        return `<p>Fíjese: <span class="hl">${listado}</span>. Y aun así el aparato no obedece.</p><p>Eso no es falta de esfuerzo. <span class="hl">Es señal de que la causa de su tensión ${donde}.</span></p>`;
+     }},
+     {load:'Ubicando la causa real en su cuerpo', dur:1500, reveal:`<p>Piense en una <span class="hl">manguera</span>. Cuando usted aprieta la punta, el agua sale con mucha más fuerza — es la misma agua, solo que con más presión.</p><p>Hay un mecanismo en su cuerpo — el <span class="hl">sistema nervioso autónomo</span> — que hace exactamente eso con sus vasos: los aprieta. Y no los suelta. Sus vasos pasan el día entero apretados, como una manguera apretada. <span class="hla">Incluso mientras usted duerme.</span></p>`},
+     {load:'Verificando por qué el medicamento no bastó', dur:1300, reveal:`<p>El medicamento hasta ensancha un poco la manguera. Pero mientras su cuerpo sigue apretando del otro lado, <span class="hla">usted está echando agua en canasta.</span></p><div class="statcard"><div class="big">≈ 50%</div><div class="lbl">En Colombia, cerca de la mitad de las personas con tensión alta no la tiene bajo control — y muchas ni siquiera están diagnosticadas. — MinSalud</div></div>`},
+     {load:'Nombrando lo que hace que su cuerpo apriete', dur:1100, reveal:`<p>Y existe una forma de hacer que su cuerpo <span class="hl">afloje ese apretón.</span> Se llama <span class="hla">Gatillo Vagal</span> — y es exactamente lo que este diagnóstico está midiendo en usted.</p>`},
+   ]},
+
+  {type:'vsl', id:'vsl1', tag:'VSL 1 · AUTORIDAD', kicker:'Vea', h:'En 60 segundos, entienda por qué su cuerpo está apretando sus arterias.', vlbl:'[ VIDEO DEL EXPERTO · 1–2 min ]', btn:'Ya entendí — continuar mi diagnóstico'},
+
+  {type:'q', id:'q12', block:'Rutina', num:12, kind:'single', emoji:'🌅', title:'¿Cómo se despierta en la mañana?',
+   opts:[{t:'De un sobresalto, ya con el corazón acelerado',e:'💓',s:5,alert:true},{t:'Con cansancio, como si no hubiera dormido',e:'😪',s:4,alert:true},{t:'Normal',e:'😐',s:2},{t:'Con buena energía',e:'😃',s:1}]},
+  {type:'q', id:'q13', block:'Rutina', num:13, kind:'single', emoji:'🌙', title:'¿Cómo es su sueño?',
+   opts:[{t:'Me despierto varias veces en la madrugada',e:'😳',s:5,alert:true},{t:'Me demoro en coger el sueño, la cabeza no se apaga',e:'🧠',s:5,alert:true},{t:'Duermo, pero amanezco sin descanso',e:'😴',s:3},{t:'Duermo bien',e:'😌',s:1}]},
+  {type:'q', id:'q14', block:'Rutina', num:14, kind:'single', emoji:'😬', title:'¿Nota los hombros tensos, la mandíbula apretada o que aguanta la respiración sin darse cuenta?',
+   opts:[{t:'Sí, todo el tiempo',e:'😣',s:5,alert:true},{t:'Sí, cuando estoy bajo estrés',e:'😟',s:4},{t:'Rara vez',e:'🙂',s:2},{t:'Nunca me había fijado',e:'🤔',s:2}]},
+  {type:'q', id:'q15', block:'Rutina', num:15, kind:'single', emoji:'🫁', title:'Su respiración en el día a día es...',
+   opts:[{t:'Corta y en el pecho, casi sin darme cuenta',e:'😮‍💨',s:5,alert:true},{t:'Acelerada cuando me da ansiedad',e:'😰',s:4},{t:'No tengo idea',e:'🤷',s:3},{t:'Profunda y calmada',e:'😌',s:1}]},
+  {type:'q', id:'q16', block:'Rutina', num:16, kind:'single', emoji:'🧠', title:'¿Vive en estado de preocupación constante (trabajo, familia, plata, salud)?',
+   opts:[{t:'Sí, no logro desconectarme',e:'😵‍💫',s:5,alert:true},{t:'Buena parte del tiempo',e:'😟',s:4},{t:'A veces',e:'😐',s:2},{t:'No',e:'😌',s:1}]},
+  {type:'q', id:'q17', block:'Rutina', num:17, kind:'single', emoji:'⚡', title:'Cuando se toma la tensión justo después de un susto o una discusión, ¿sube?',
+   opts:[{t:'Sí, se dispara',e:'📈',s:5,alert:true},{t:'Sí, un poco',e:'↗️',s:3},{t:'No suelo medirme en esos momentos',e:'🤷',s:2},{t:'No cambia',e:'😐',s:1}]},
+
+  {type:'break', id:'break3', variant:'warn', illus:'breath', gaugeTo:56,
+   cta:'Continuar diagnóstico', ctaAlert:false,
+   steps:[
+     {load:'Analizando su patrón respiratorio', dur:1300, reveal:`<div class="kicker">📊 Lectura en tiempo real</div><h2>Interesante. Esto explica muchas cosas.</h2>`},
+     {load:'Cruzando respiración + calidad del sueño', dur:1300, reveal:(a)=>{
+        const q12=gvK('q12'), q13=gvK('q13'), q14=gvK('q14'), q15=gvK('q15'), q16=gvK('q16');
+        const s=[];
+        if(q15===0) s.push('su respiración es corta y en el pecho');
+        else if(q15===1) s.push('su respiración se acelera con la ansiedad');
+        if(q13===0) s.push('se despierta en la madrugada');
+        else if(q13===1) s.push('le cuesta coger el sueño');
+        else if(q13===2||q12===1) s.push('amanece sin descanso');
+        else if(q12===0) s.push('se despierta de un sobresalto');
+        if(q14===0||q14===1) s.push('carga la tensión en los hombros');
+        if(q16===0||q16===1) s.push('vive en preocupación constante');
+        let frase;
+        if(s.length>=2) frase='usted respondió que '+s[0]+' — y que '+s[1];
+        else if(s.length===1) frase='usted respondió que '+s[0];
+        else frase='sus respuestas muestran un sistema que vive en modo de alerta';
+        return `<p>${frase}. <span class="hl">No es coincidencia.</span></p><p>Eso es la forma en que el cuerpo funciona en modo de alerta. Cada señal que sube a su cerebro repite la misma orden: <span class="hla">"siga apretando los vasos."</span></p>`;
+     }},
+     {load:'Calculando cuántas veces al día pasa esto', dur:1400, reveal:`<p>Usted hace esto más de <span class="hl">20 mil veces al día</span>. Sin darse cuenta. Su cuerpo no aprieta la manguera por accidente — la <span class="hla">vuelve a apretar, respiración tras respiración</span>, todo el día.</p>`},
+   ]},
+
+  {type:'q', id:'q18', block:'Objetivo', num:18, kind:'multi', emoji:'😨', title:'¿Qué es lo que más le asusta de la tensión alta?', sub:'Marque todo lo que le pese.',
+   opts:[{t:'Un derrame / ACV',e:'🧠',s:2,alert:true},{t:'Un infarto',e:'❤️‍🩹',s:2,alert:true},{t:'Depender de medicamentos el resto de la vida',e:'💊',s:2},{t:'Tener que subir la dosis para siempre',e:'📈',s:2},{t:'No ver crecer a mis hijos/nietos',e:'👨‍👩‍👧',s:3,alert:true}]},
+  {type:'q', id:'q19', block:'Objetivo', num:19, kind:'single', emoji:'🔇', title:'¿Sabía que la tensión alta <span class="em">no duele</span>? ¿Que puede destruir sus vasos por años sin que usted sienta nada?',
+   opts:[{t:'Lo sabía, y eso me asusta más',e:'😨',s:4,alert:true},{t:'No lo sabía. Es aterrador',e:'😳',s:4,alert:true},{t:'Ya había oído algo',e:'😐',s:2}]},
+  {type:'q', id:'q20', block:'Objetivo', num:20, kind:'single', emoji:'⏱️', title:'¿Cuándo fue la última vez que de verdad sintió miedo por su tensión?',
+   opts:[{t:'Esta semana',e:'😰',s:5,alert:true},{t:'Este mes',e:'😟',s:4},{t:'Cuando el médico me subió la dosis',e:'💊',s:4},{t:'Cuando alguien cercano se enfermó',e:'💔',s:4}]},
+  {type:'q', id:'q21', block:'Objetivo', num:21, kind:'single', emoji:'🔮', title:'Si nada cambia en los próximos 5 años, ¿cómo se imagina su salud?',
+   opts:[{t:'Peor — y eso me aterra',e:'😨',s:5,alert:true},{t:'Igual, solo tapando el problema',e:'😔',s:4},{t:'Prefiero no pensarlo',e:'🙈',s:4},{t:'Mejor',e:'🙂',s:1}]},
+  {type:'q', id:'q22', block:'Objetivo', num:22, kind:'single', emoji:'🎯', title:'¿Qué es lo que más quiere?',
+   opts:[{t:'Dejar de tenerle miedo a medirme la tensión',e:'🩺',s:2},{t:'No tener que subir la dosis nunca más',e:'💊',s:2},{t:'Dormir sin miedo a no despertar',e:'🌙',s:3},{t:'Tener energía y vivir sin ese peso en la cabeza',e:'✨',s:2}]},
+
+  {type:'break', id:'break4', variant:'calm', illus:'climb', gaugeTo:73,
+   cta:'Ya casi tengo mi resultado', ctaAlert:false,
+   steps:[
+     {load:'Verificando si su objetivo es alcanzable', dur:1300, reveal:`<div class="kicker">✓ Todavía está a tiempo de darle la vuelta</div><h2>Lo que usted quiere <span style="color:var(--teal-deep)">es posible</span> — pero no por el camino que venía intentando.</h2>`},
+     {load:'Cruzando con quien ya apagó la alarma', dur:1300, reveal:`<p>Usted no necesita otra dieta. Necesita <span class="hl">apagar la alarma.</span></p><p>La respiración lenta y rítmica actúa directo sobre el <span class="hl">barorreflejo</span> — el mecanismo que el propio cuerpo usa para regular la tensión. No es alternativo. Es su sistema funcionando de nuevo.</p><div class="possbar"><div class="track"><div class="fill" id="possfill"></div></div><div class="cap"><span>Alarma encendida</span><span>Con el Gatillo Vagal</span></div></div>`},
+     {load:'Cargando testimonios de participantes', dur:1100, reveal:`
+       <!-- ⚠ PLACEHOLDER: reemplazar por testimonios REALES antes de publicar (o marcarlos como ilustrativos). No se usa sello "verificado" ni conteos inventados. -->
+       <div class="testi"><div class="thead"><img class="photo" src="testimonio-1.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'photo',textContent:'M'}))"><div class="tmeta"><div class="tname">Marta, 58</div><div class="stars">★★★★★<span class="sub">testimonio de participante</span></div></div></div><div class="txt">"Volví a dormir toda la noche. Hacía meses que no me despertaba en la madrugada con el corazón disparado."</div></div>
+       <div class="testi"><div class="thead"><img class="photo" src="testimonio-2.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'photo',textContent:'J'}))"><div class="tmeta"><div class="tname">Jaime, 61</div><div class="stars">★★★★★<span class="sub">testimonio de participante</span></div></div></div><div class="txt">"Lo que cambió para mí fue dejar de tenerle pavor a medirme. Evitaba el aparato. Hoy me mido tranquilo."</div></div>`},
+   ]},
+
+  {type:'q', id:'idade', block:'Perfil', num:23, kind:'slider', emoji:'🎂', title:'¿Cuántos años tiene?', sub:'Esto ajusta el cálculo de su tiempo de exposición al estado de alerta.', min:30,max:85,def:54,unit:'años'},
+  {type:'q', id:'sexo', block:'Perfil', num:24, kind:'sex', emoji:'🧍', title:'Usted es...', opts:[{t:'Mujer',e:'👩'},{t:'Hombre',e:'👨'}]},
+  {type:'q', id:'altura', block:'Perfil', num:25, kind:'slider', emoji:'📏', title:'¿Cuánto mide?', min:140,max:210,def:165,unit:'cm'},
+  {type:'q', id:'peso', block:'Perfil', num:26, kind:'slider', emoji:'⚖️', title:'¿Y su peso aproximado?', sub:'Entra en el cálculo de la carga sobre su sistema cardiovascular.', min:45,max:160,def:78,unit:'kg'},
+  {type:'q', id:'medicao', block:'Perfil', num:27, kind:'single', emoji:'🩸', title:'Su última medición de tensión estuvo más o menos en...',
+   opts:[{t:'12/8 o un poco por debajo',e:'🟡',s:3},{t:'Entre 13/8 y 14/9',e:'🟠',s:4,alert:true},{t:'15/10 o más',e:'🔴',s:5,alert:true},{t:'No sabría decir ahora',e:'❔',s:3}]},
+  {type:'q', id:'tempo_med', block:'Perfil', num:28, kind:'single', emoji:'💊', title:'¿Hace cuánto usa medicamento para la tensión?',
+   opts:[{t:'Hace más de 5 años',e:'⏳',s:5,alert:true,meta:'más de 5 años'},{t:'Hace menos de 5 años',e:'📆',s:4,meta:'menos de 5 años'},{t:'Lo usé y lo dejé',e:'⏸️',s:4,meta:'uso interrumpido'},{t:'No lo uso',e:'🚫',s:2,meta:'sin uso'}]},
+
+  {type:'q', id:'familiar', block:'Método', num:29, kind:'single', emoji:'🔔', title:'¿Ya había oído hablar del <span class="em">Gatillo Vagal</span> antes de hoy?',
+   opts:[{t:'Nunca lo había oído',e:'🆕',s:2},{t:'Había oído del nervio vago, pero no sabía de la relación con la tensión',e:'💡',s:2},{t:'Ya había oído hablar',e:'👍',s:1}]},
+  {type:'q', id:'comecaria', block:'Método', num:30, kind:'single', emoji:'✋', title:'Si pudiera activar el Gatillo Vagal en pocos minutos al día, en casa, sin dejar su tratamiento — ¿lo haría?',
+   opts:[{t:'Sí, empezaría hoy',e:'🙌',s:2},{t:'Sí, si fuera sencillo',e:'👌',s:2},{t:'Necesito entenderlo mejor',e:'🤔',s:1}]},
+
+  {type:'break', id:'break5', variant:'calm', illus:'assemble', gaugeTo:92, bridge:true,
+   cta:'Liberar mi diagnóstico', ctaAlert:false,
+   steps:[
+     {load:'Cerrando su perfil de alerta', dur:1200, reveal:`<div class="kicker">✓ Ya casi</div><h2 id="bridgeH"></h2>`},
+     {load:'Preparando su diagnóstico personalizado', dur:1200, reveal:`<p>Su perfil de alerta ya está calculado. Solo falta el último paso para liberar su resultado.</p>`},
+   ]},
+
+  {type:'capture', id:'capture'},
+  {type:'calc'},
+  {type:'result'},
+  {type:'vsl2page', id:'vsl2'},
+];
+
+const Quiz = (function(){
+  let idx = 0;
+  const scr = document.getElementById('screens');
+  const monitor = document.getElementById('monitor');
+  const gaugeFill = document.getElementById('gaugeFill');
+  const gaugeVal = document.getElementById('gaugeVal');
+  const stepTag = document.getElementById('stepTag');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let advancing=false;          // evita avance doble / clic ansioso
+  const BREAK_SPEED=1.45;       // hace las cargas de los breaks más lentas
+  const _fired={};              // dispara cada evento del Pixel solo una vez
+  function track(ev){ if(_fired[ev]) return; _fired[ev]=1; if(window.fbq) fbq('track', ev); }
+
+  /* ===== Rastreador del Panel (opcional) =====
+     Pegue la URL /exec de su Apps Script en TRACK_URL. Si queda vacío, no hace nada.
+     Envía cada etapa vista y cada respuesta, sin trabar el quiz (sendBeacon). */
+  const TRACK_URL = ''; // <-- pegue aquí la URL de su backend (termina en /exec)
+  let _sid=''; try{ _sid=sessionStorage.getItem('gv_sid')||''; }catch(e){}
+  if(!_sid){ _sid='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); try{sessionStorage.setItem('gv_sid',_sid);}catch(e){} }
+  function panelEvent(id, label, answer){
+    if(!TRACK_URL) return;
+    try{
+      const body=JSON.stringify({ts:Date.now(),sid:_sid,ev:answer!=null?'answer':'view',id:id,label:label||'',answer:answer!=null?String(answer):''});
+      if(navigator.sendBeacon){ navigator.sendBeacon(TRACK_URL, body); }
+      else{ fetch(TRACK_URL,{method:'POST',body:body,keepalive:true,mode:'no-cors'}); }
+    }catch(e){}
+  }
+
+  /* ===== UTMs =====
+     Captura las UTMs que llegan del anuncio (en la URL del quiz) y las mantiene por la sesión.
+     Foco en utm_source + utm_campaign; carga las demás utm_* si existen.
+     appendUTM(url) anexa las UTMs a cualquier link (checkout, iframe de Tynk...). */
+  const UTM = (function(){
+    let u={};
+    try{ const s=JSON.parse(sessionStorage.getItem('gv_utm')||'null'); if(s) u=s; }catch(e){}
+    try{
+      const p=new URLSearchParams(location.search);
+      p.forEach((v,k)=>{ if(/^utm_/i.test(k) && v) u[k]=v; });
+      sessionStorage.setItem('gv_utm', JSON.stringify(u));
+    }catch(e){}
+    return u;
+  })();
+  function utmQS(){ return Object.keys(UTM).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(UTM[k])).join('&'); }
+  function appendUTM(url){ const qs=utmQS(); if(!qs) return url; return url + (url.indexOf('?')>=0?'&':'?') + qs; }
+
+  /* Sistema de revelación de las VSLs.
+     El video de Tynk carga NORMAL (thumb del experto + "en vivo" preservada).
+     El botón/oferta queda oculto y se revela en el tiempo del pitch. Tres disparadores:
+       1) window.gvReveal('vsl1'|'vsl2')  -> Tynk llama por JS/callback en el tiempo X
+       2) Tynk revela el elemento por ID (#vslBtn) -> un MutationObserver lo detecta y corre los efectos
+       3) Red de seguridad por tiempo -> solo actúa si Tynk no está configurada, evitando funnel trabado
+     mountVsl inyecta el iframe real (con las UTMs anexadas, para que Tynk las pase al checkout). */
+  const vslReveal={};
+  window.gvReveal=function(which){ if(vslReveal[which]) vslReveal[which](); };
+  function mountVsl(frameEl, src){
+    if(frameEl) frameEl.innerHTML='<iframe src="'+appendUTM(src)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+  }
+  function setupReveal(key, watchEl, onReveal, safetyMs){
+    let done=false;
+    function fire(){ if(done) return; done=true; onReveal(); }
+    vslReveal[key]=fire;                                   // disparador 1 (JS de Tynk)
+    if(watchEl){                                           // disparador 2 (Tynk revela por ID)
+      const obs=new MutationObserver(()=>{ if(getComputedStyle(watchEl).display!=='none'){ obs.disconnect(); fire(); } });
+      obs.observe(watchEl,{attributes:true,attributeFilter:['style','class']});
+    }
+    if(safetyMs) setTimeout(fire, safetyMs);              // disparador 3 (red de seguridad)
+  }
+
+  function setGauge(pct){ STATE.score=pct; gaugeFill.style.width=pct+'%'; gaugeVal.textContent=String(Math.round(pct)).padStart(2,'0')+'%'; monitor.classList.toggle('alert',pct>=55); }
+  function bumpScore(d){ setGauge(Math.min(97, STATE.score+d)); }
+
+  function show(i){
+    advancing=false;
+    idx=i; const item=FLOW[i]; scr.innerHTML=''; scr.scrollTop=0;
+    monitor.classList.toggle('hidden', ['intro','result','vsl2page'].includes(item.type));
+    if(item.type==='q') stepTag.textContent='ANÁLISIS '+String(item.num).padStart(2,'0')+'/30';
+    const el=document.createElement('div'); el.className='screen active';
+    switch(item.type){
+      case 'intro': el.className='screen active intro'; el.innerHTML=introHTML(); break;
+      case 'q': el.innerHTML=questionHTML(item); break;
+      case 'break': el.className='screen active brk '+(item.variant==='warn'?'warn':'calm'); el.innerHTML=breakShell(item); break;
+      case 'vsl': el.className='screen active vsl'; el.innerHTML=vslHTML(item); break;
+      case 'capture': el.innerHTML=captureHTML(); break;
+      case 'calc': el.className='screen active calc'; el.innerHTML=calcHTML(); break;
+      case 'result': el.className='screen active result'; el.innerHTML=resultHTML(); break;
+      case 'vsl2page': el.className='screen active vsl2page'; el.innerHTML=vsl2PageHTML(); break;
+    }
+    scr.appendChild(el);
+    if(item.type==='q'){ wireQuestion(item, el); if(item.num===1) track('StartQuiz'); }
+    if(item.type==='break') playBreak(item, el);
+    if(item.type==='vsl') wireVsl(el);
+    if(item.type==='capture') wireCapture(el);
+    if(item.type==='calc') runCalc(el);
+    if(item.type==='result'){ animateResult(el); track('ViewResult'); }
+    if(item.type==='vsl2page') wireVsl2Page(el);
+    saveProgress(); // red de seguridad: si la página recarga, el lead vuelve donde quedó
+    panelEvent(item.id||item.type, (item.num?('Q'+item.num+' · '):'')+(item.title? item.title.replace(/<[^>]+>/g,''):(item.type)) );
+  }
+  function saveProgress(){
+    try{ sessionStorage.setItem('gv_quiz', JSON.stringify({ idx:idx, answers:STATE.answers, score:STATE.score, fired:_fired })); }catch(e){}
+  }
+  function restoreProgress(){
+    try{
+      const raw=sessionStorage.getItem('gv_quiz'); if(!raw) return false;
+      const s=JSON.parse(raw);
+      // solo reanuda si de verdad estaba a mitad del funnel (no en el intro)
+      if(!s || typeof s.idx!=='number' || s.idx<=0 || s.idx>=FLOW.length) return false;
+      STATE.answers=s.answers||{}; STATE.score=s.score||8;
+      Object.assign(_fired, s.fired||{});
+      setGauge(STATE.score);
+      show(s.idx);
+      return true;
+    }catch(e){ return false; }
+  }
+  function next(){ if(advancing) return; advancing=true; if(idx<FLOW.length-1) show(idx+1); else advancing=false; }
+
+  /* INTRO */
+  function introHTML(){return `
+    <div class="badge">🫀 Diagnóstico en 2 minutos</div>
+    <div class="heartwrap">${il_heart()}</div>
+    <h1>Usted le baja a la sal, se toma el remedio juicioso — ¿y la tensión <span class="em">sigue subiendo?</span></h1>
+    <p>Hay un motivo. Y nunca estuvo en su plato.</p>
+    <p>Responda 30 preguntas rápidas y descubra su <b>Índice de Alarma Vascular</b> — el cálculo que explica por qué nada de lo que ha intentado ha funcionado hasta hoy.</p>
+    <div class="cta"><button class="btn" onclick="Quiz.next()">Iniciar mi diagnóstico <span class="btn-arrow">→</span></button></div>
+    <div class="trust"><span class="dot"></span> Gratis &nbsp;·&nbsp; Resultado personalizado &nbsp;·&nbsp; 2 min</div>
+    <div class="med-note">Contenido educativo y complementario. No sustituye la consulta, el tratamiento ni los medicamentos indicados por su médico. Consulte a su médico antes de iniciar cualquier práctica. Nunca suspenda su medicación por cuenta propia.</div>`;}
+
+  /* QUESTION */
+  function questionHTML(item){
+    let inner='';
+    if(item.kind==='single'||item.kind==='multi'){
+      inner=`<div class="options">`+item.opts.map((o,k)=>`<button class="opt ${item.kind==='multi'?'multi':''} ${o.alert?'alertopt':''}" data-k="${k}" data-s="${o.s||0}">${o.e?`<span class="oe">${o.e}</span>`:''}<span class="otxt">${o.t}</span><span class="ck"></span></button>`).join('')+`</div>`;
+      if(item.kind==='multi') inner+=`<div class="hint">▹ seleccione todas las que apliquen y luego toque continuar</div>`;
+    }
+    if(item.kind==='sex') inner=`<div class="sexrow">`+item.opts.map((o,k)=>`<button class="opt" data-k="${k}" data-v="${o.t}"><span class="oe">${o.e}</span><span class="otxt">${o.t}</span><span class="ck"></span></button>`).join('')+`</div>`;
+    if(item.kind==='slider'){const cur=(STATE.answers[item.id]!=null)?STATE.answers[item.id]:item.def; inner=`<div class="slider-wrap"><div class="slider-val"><span id="sv_${item.id}">${cur}</span><span class="u">${item.unit}</span></div><input type="range" id="rg_${item.id}" min="${item.min}" max="${item.max}" value="${cur}"><div class="range-ends"><span>${item.min}</span><span>${item.max}</span></div></div>`;}
+    const showBtn=(item.kind==='multi'||item.kind==='slider');
+    return `<div class="qmeta"><span class="qnum">${String(item.num).padStart(2,'0')}</span><span class="qblock">${item.block}</span></div>
+      <div class="qtitle">${item.emoji?item.emoji+' ':''}${item.title}</div>${item.sub?`<div class="qsub">${item.sub}</div>`:''}${inner}
+      ${showBtn?`<div class="cta"><button class="btn" id="qcont" ${item.kind==='multi'?'disabled':''} onclick="Quiz.commit()">Continuar <span class="btn-arrow">→</span></button></div>`:''}`;
+  }
+  function wireQuestion(item, el){
+    if(item.kind==='single'){el.querySelectorAll('.opt').forEach(b=>{b.onclick=()=>{if(advancing)return;advancing=true;el.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');STATE.answers[item.id]={k:+b.dataset.k,t:item.opts[+b.dataset.k].t,meta:item.opts[+b.dataset.k].meta};panelEvent(item.id,'',item.opts[+b.dataset.k].t);bumpScore(+b.dataset.s*.8);setTimeout(()=>{if(idx<FLOW.length-1)show(idx+1);},260);};});}
+    if(item.kind==='sex'){el.querySelectorAll('.opt').forEach(b=>{b.onclick=()=>{if(advancing)return;advancing=true;el.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');STATE.answers[item.id]=b.dataset.v;panelEvent(item.id,'',b.dataset.v);setTimeout(()=>{if(idx<FLOW.length-1)show(idx+1);},260);};});}
+    if(item.kind==='multi'){const btn=el.querySelector('#qcont');el.querySelectorAll('.opt').forEach(b=>{b.onclick=()=>{b.classList.toggle('selected');btn.disabled=el.querySelectorAll('.opt.selected').length===0;};});}
+    if(item.kind==='slider'){const rg=el.querySelector('#rg_'+item.id),sv=el.querySelector('#sv_'+item.id);rg.oninput=()=>{sv.textContent=rg.value;STATE.answers[item.id]=+rg.value;saveProgress();};STATE.answers[item.id]=(STATE.answers[item.id]!=null)?STATE.answers[item.id]:+rg.value;}
+  }
+  function commit(){
+    const item=FLOW[idx];
+    if(item.kind==='multi'){const el=scr.querySelector('.screen');const sel=[...el.querySelectorAll('.opt.selected')];STATE.answers[item.id]=sel.map(s=>item.opts[+s.dataset.k].t);panelEvent(item.id,'',STATE.answers[item.id].join(', '));bumpScore(sel.reduce((a,s)=>a+(+s.dataset.s||0),0)*.6);}
+    if(item.kind==='slider'){panelEvent(item.id,'',STATE.answers[item.id]+' '+(item.unit||''));}
+    next();
+  }
+
+  /* BREAK — progressive reveal player */
+  function breakShell(item){
+    return `<div class="brk-illus">${illustration(item.illus)}</div>
+      <div class="brk-stage" id="brkStage"></div>
+      <div class="brk-cta" id="brkCta"><button class="btn ${item.ctaAlert?'alert':''}" onclick="Quiz.next()">${item.cta} <span class="btn-arrow">→</span></button></div>`;
+  }
+  function playBreak(item, el){
+    const stage=el.querySelector('#brkStage');
+    const ctaWrap=el.querySelector('#brkCta');
+    const fromG=STATE.score, toG=item.gaugeTo||STATE.score;
+    let step=0;
+    function ramp(k){ setGauge(fromG+(toG-fromG)*k); }
+    function nextStep(){
+      if(step>=item.steps.length){ ctaWrap.classList.add('in'); ramp(1); return; }
+      const s=item.steps[step];
+      const load=document.createElement('div'); load.className='loadrow';
+      load.innerHTML=`<div class="loadlbl"><span class="sp"></span>${s.load}...</div><div class="loadtrack"><div class="loadfill"></div></div>`;
+      stage.appendChild(load);
+      const fill=load.querySelector('.loadfill');
+      const dur=reduced?60:Math.round((s.dur||1100)*BREAK_SPEED);
+      requestAnimationFrame(()=>{ fill.style.transition=`width ${dur}ms cubic-bezier(.3,.7,.4,1)`; fill.style.width='100%'; });
+      // ramp gauge across steps
+      ramp((step+1)/item.steps.length*0.9);
+      setTimeout(()=>{
+        load.remove();
+        const rev=document.createElement('div'); rev.className='reveal'; rev.innerHTML=(typeof s.reveal==='function')?s.reveal(STATE.answers):s.reveal;
+        stage.appendChild(rev);
+        // bridge dynamic headline
+        const bh=rev.querySelector('#bridgeH');
+        if(bh){const a=STATE.answers;const tempo=(a.tempo_med&&a.tempo_med.meta)?a.tempo_med.meta:'algún tiempo';bh.innerHTML=`Con <span class="em">${a.idade||'—'} años</span> y ${tempo} de tratamiento sin control total, ya tenemos todo lo que necesitamos.`;}
+        requestAnimationFrame(()=>rev.classList.add('in'));
+        const pf=rev.querySelector('#possfill'); if(pf) setTimeout(()=>pf.style.width='88%',250);
+        rev.scrollIntoView({behavior:reduced?'auto':'smooth',block:'nearest'});
+        step++;
+        setTimeout(nextStep, reduced?60:520);
+      }, dur+(reduced?0:160));
+    }
+    nextStep();
+  }
+
+  /* VSL */
+  function vslHTML(item){return `<div class="kicker2">${item.kicker}</div><h2>${item.h}</h2>
+    <div class="vslframe" id="vsl1Frame"></div>
+    <div class="cta">
+      <div class="vsl-lock" id="vslLock"><span class="lk-sp"></span> Vea el video para liberar el siguiente paso</div>
+      <button class="btn" id="vslBtn" style="display:none" onclick="Quiz.next()">${item.btn} <span class="btn-arrow">→</span></button>
+    </div>`;}
+  function wireVsl(el){
+    const btn=el.querySelector('#vslBtn');
+    const lock=el.querySelector('#vslLock');
+    /* ⚠ REEMPLAZAR por la VSL1 en ESPAÑOL (CO) */
+    mountVsl(el.querySelector('#vsl1Frame'), 'https://play.tynk.ai/p/REEMPLAZAR-VSL1-ES');
+    // libera el botón cuando Tynk lo señale (o por red de seguridad). VSL1 ~1:14
+    setupReveal('vsl1', btn, ()=>{
+      if(lock) lock.style.display='none';
+      if(btn){ btn.style.display='flex'; btn.classList.add('reveal-btn'); }
+    }, 70000); // libera el botón "continuar" en 1:10 (VSL1 dura ~1:14)
+  }
+
+  /* CAPTURE */
+  function captureHTML(){return `<div class="qmeta"><span class="qnum">✓</span><span class="qblock">Diagnóstico listo</span></div>
+    <div class="qtitle">¿A dónde le enviamos su resultado?</div>
+    <div class="qsub">Su Índice de Alarma Vascular y el acceso al protocolo quedan vinculados a este correo.</div>
+    <div class="field"><label>Su nombre</label><input type="text" id="cap_nome" placeholder="¿Cómo lo podemos llamar?" autocomplete="given-name"></div>
+    <div class="field"><label>Su mejor correo</label><input type="email" id="cap_email" placeholder="su@correo.com" autocomplete="email"></div>
+    <div class="cta"><button class="btn" id="capbtn" disabled onclick="Quiz.submitCapture()">Ver mi diagnóstico <span class="btn-arrow">→</span></button></div>
+    <div class="hint" style="text-align:center">🔒 Sus datos quedan protegidos y no se comparten.</div>`;}
+  function wireCapture(el){const n=el.querySelector('#cap_nome'),e=el.querySelector('#cap_email'),b=el.querySelector('#capbtn');function chk(){b.disabled=!(n.value.trim().length>1&&/.+@.+\..+/.test(e.value));}n.oninput=chk;e.oninput=chk;}
+  function submitCapture(){const el=scr.querySelector('.screen');STATE.answers.nome=el.querySelector('#cap_nome').value.trim();STATE.answers.email=el.querySelector('#cap_email').value.trim();track('Lead');setGauge(97);next();}
+
+  /* CALC */
+  function calcHTML(){return `<div class="ring"><svg width="130" height="130"><circle cx="65" cy="65" r="56" stroke="#E1ECEF" stroke-width="10" fill="none"/><circle id="ringP" cx="65" cy="65" r="56" stroke="var(--teal)" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="352" stroke-dashoffset="352"/></svg><div class="pct" id="ringPct">0%</div></div>
+    <h2>Cruzando sus respuestas...</h2><div class="sub">Armando su diagnóstico personalizado</div>
+    <div class="calc-steps">
+      <div class="cstep"><span class="ci"></span> Cruzando respuestas con el perfil de alerta autonómico</div>
+      <div class="cstep"><span class="ci"></span> Analizando su patrón respiratorio</div>
+      <div class="cstep"><span class="ci"></span> Midiendo el tiempo de exposición al estado de alerta</div>
+      <div class="cstep"><span class="ci"></span> Calculando su Índice de Alarma Vascular</div>
+    </div>`;}
+  function runCalc(el){const steps=[...el.querySelectorAll('.cstep')];const ring=el.querySelector('#ringP'),pct=el.querySelector('#ringPct');const dur=reduced?200:6500,t0=performance.now();
+    function tick(now){let k=Math.min(1,(now-t0)/dur);ring.style.strokeDashoffset=352-(352*k);pct.textContent=Math.round(k*100)+'%';steps.forEach((s,i)=>{if(k>(i+1)/4.3)s.classList.add('done');});if(k<1)requestAnimationFrame(tick);else setTimeout(next,500);}
+    requestAnimationFrame(tick);}
+
+  /* RESULT */
+  function computeIndex(){let b=78+Math.round(Math.min(11,(STATE.score-60)*0.35));return Math.max(78,Math.min(89,b));}
+  function resultHTML(){
+    const a=STATE.answers;
+    const nome=a.nome?a.nome.split(' ')[0]:'';
+    const idade=a.idade||54, altura=a.altura||165, peso=a.peso||78;
+    const imc=peso/Math.pow(altura/100,2), imcTxt=imc.toFixed(1).replace('.',',');
+    const imcBand=imc>=30?'bastante por encima del rango saludable':imc>=25?'por encima del rango saludable':'dentro del rango';
+    const idx=computeIndex();
+    const tempo=(a.tempo_med&&a.tempo_med.meta)?a.tempo_med.meta:'algún tiempo';
+    const anosExpo=Math.max(1,Math.round(idade-35));
+    const imcLine=imc>=25
+      ? `Con <span class="hl">${peso}kg</span> y <span class="hl">${altura}cm</span>, su índice corporal está <span class="hla">${imcBand}</span> — y cada punto por encima le suma carga al mismo sistema de alerta que ya está sobrecargado.`
+      : `Aun con un índice corporal dentro del rango, su sistema de alerta está sobrecargado — lo que confirma que, en su caso, la causa está aún más ligada al gatillo autonómico que al peso.`;
+    return `
+    <div class="result-hero">
+      <div class="rk">Diagnóstico concluido · Índice de Alarma Vascular</div>
+      <div class="dial">${il_dial()}<div class="needle" id="needle"></div><div class="hub"></div></div>
+      <div class="level-badge">⚠ ALTO · Nivel 4 de 5</div>
+      <div class="idx">Su índice: <b>${idx}</b> / 100</div>
+    </div>
+    <div class="result-body">
+      <div class="greet">${nome?nome+', ':''}su resultado explica exactamente lo que usted viene viviendo.</div>
+      <div class="databox">
+        <div class="drow"><span class="k">🎂 Edad</span><span class="v">${idade} años</span></div>
+        <div class="drow"><span class="k">⚖️ Índice corporal (IMC)</span><span class="v ${imc>=25?'hi':''}">${imcTxt}</span></div>
+        <div class="drow"><span class="k">💊 Tiempo de tratamiento</span><span class="v">${tempo}</span></div>
+        <div class="drow"><span class="k">⏱️ Tiempo en estado de alerta</span><span class="v hi">≈ ${anosExpo} años</span></div>
+        <div class="drow"><span class="k">🚨 Nivel de alarma</span><span class="v hi">ALTO (4/5)</span></div>
+      </div>
+      <p>Por sus respuestas, su cuerpo aprieta sus vasos desde hace <span class="hla">cerca de ${anosExpo} años</span> — como quien aprieta una manguera y no la suelta. ${(()=>{
+        const q4=gvK('q4'),q12=gvK('q12'),q13=gvK('q13'),q14=gvK('q14'),q15=gvK('q15');
+        const s=[];
+        if(q15===0) s.push('respiración corta');
+        if(q13===0||q13===1||q13===2||q12===0||q12===1) s.push('sueño interrumpido');
+        if(q14===0||q14===1) s.push('hombros tensos');
+        if(q4===0||q4===1) s.push('tensión que sube de la nada');
+        if(s.length>=2){ const lista=s.slice(0,-1).join(', ')+' y '+s[s.length-1]; return lista+' — no son cosas separadas. <span class="hl">Son el mismo apretón, encendido 24 horas al día.</span>'; }
+        if(s.length===1) return 'Lo que usted siente — '+s[0]+' — no es un hecho aislado. <span class="hl">Es ese mismo apretón, encendido 24 horas al día.</span>';
+        return '<span class="hl">Es un apretón silencioso, encendido 24 horas al día.</span>';
+      })()}</p>
+      <p>${imcLine}</p>
+      <p>${(()=>{
+        const sal=gvSalCut(); const tm=STATE.answers.tempo_med; const takesMeds=tm&&(tm.k===0||tm.k===1);
+        const fearDep=gvArr('q18').some(t=>/depender/i.test(t));
+        const saltPart = sal ? 'Por eso bajarle a la sal no resuelve su problema de fondo.' : 'Por eso ninguna dieta, por sí sola, resuelve su problema de fondo.';
+        let medPart;
+        if(takesMeds){ medPart=' Y por eso, aunque el medicamento le ayuda a bajar el número, usted sigue con la sensación de que solo está tapando el problema'+(fearDep?' — y con el miedo de depender de él el resto de la vida.':'.'); }
+        else { medPart=' Y mientras la causa siga encendida, esa sensación de que algo no se resuelve no se va.'; }
+        return saltPart+medPart;
+      })()}</p>
+
+      <div class="sectlabel">Lo que pasa si nada cambia</div>
+      <div class="futurebox">${il_decline()}
+        <h3>Sus venas no descansan.</h3>
+        <p>Mientras su cuerpo aprieta sus arterias, sus vasos siguen exprimidos, día y noche. El desgaste <span class="w">no para</span> — se acumula en silencio.</p>
+        <p>Y aquí está la parte que más asusta: <span class="w">la tensión alta no duele.</span> Mucha gente solo descubre que pasó los límites el día en que el cuerpo da la primera señal grave. Por eso la llaman <span class="w">"el enemigo silencioso".</span></p>
+        <p>Cada día con ese apretón encendido es un día <span class="w">más cerca de un derrame o un infarto.</span></p>
+      </div>
+
+      <div class="savior">
+        <div class="lead">Vea el video a continuación</div>
+        <div class="sub">Le muestra exactamente cómo activar su Gatillo Vagal — el paso que lo cambia todo a partir de hoy. 👇</div>
+      </div>
+      <div class="cta" style="padding:4px 0 8px">
+        <button class="btn yt big pulse" onclick="Quiz.next()"><span class="yt-play"></span> Ver el video ahora</button>
+      </div>
+      <div class="disc">Contenido educativo y complementario. No sustituye la valoración médica, el tratamiento ni los medicamentos indicados por su médico. Consulte a su médico antes de iniciar cualquier práctica. Nunca suspenda su medicación por cuenta propia.</div>
+    </div>`;
+  }
+  function animateResult(el){
+    const needle=el.querySelector('#needle');
+    if(needle) setTimeout(()=>needle.style.transform='translateX(-50%) rotate(52deg)',300);
+  }
+
+  /* ===== PANTALLA DEL VIDEO (VSL2) — checkout propio vía HTML (UTM garantizada) ===== */
+  function vsl2PageHTML(){
+    const nome=(STATE.answers.nome||'').split(' ')[0];
+    return `<div class="vsl2wrap">
+      <div class="kicker2">${nome?nome+', ':''}su diagnóstico está listo</div>
+      <h2 class="vsl2h">Vea el video a continuación</h2>
+      <p class="vsl2sub">Vea cómo regular su tensión de forma <b>natural y saludable</b> con el Gatillo Vagal 👇</p>
+      <div class="vslframe vsl-cta" id="vsl2Frame"></div>
+      <div class="final-cta">
+        <div class="vsl-lock" id="vsl2Lock"><span class="lk-sp"></span> Vea el video hasta el final para liberar su condición</div>
+        <div id="vsl2Reveal" style="display:none">
+          <button class="btn green big pulse reveal-btn" id="checkoutBtn">Aprovechar la oferta <span class="btn-arrow">→</span></button>
+          <div class="cta-sub">Acceso inmediato en el área de miembros después de la compra</div>
+          <div class="urgency" style="margin-top:16px"><span class="clockic">⏳</span><span class="utxt">Su condición especial queda reservada por tiempo limitado en esta sesión.</span><span class="utime" id="uclock">10:00</span></div>
+        </div>
+      </div>
+      <div class="disc">Contenido educativo y complementario. No sustituye la valoración médica, el tratamiento ni los medicamentos indicados por su médico. Consulte a su médico antes de iniciar cualquier práctica. Nunca suspenda su medicación por cuenta propia.</div>
+    </div>`;
+  }
+  /* ⚠ REEMPLAZAR por el checkout (Hotmart/Kiwify/etc.). Se conservan las UTMs vía appendUTM. */
+  const CHECKOUT_URL='https://REEMPLAZAR-CHECKOUT-CO';
+  function wireVsl2Page(el){
+    /* ⚠ REEMPLAZAR por la VSL2 en ESPAÑOL (CO) */
+    mountVsl(el.querySelector('#vsl2Frame'), 'https://play.tynk.ai/p/REEMPLAZAR-VSL2-ES');
+    const lock=el.querySelector('#vsl2Lock');
+    const reveal=el.querySelector('#vsl2Reveal');
+    const btn=el.querySelector('#checkoutBtn');
+    if(btn) btn.onclick=()=>{ track('InitiateCheckout'); location.href=appendUTM(CHECKOUT_URL); };
+    let counting=false;
+    function startCountdown(){ const clock=el.querySelector('#uclock'); let t=10*60; if(clock){const iv=setInterval(()=>{t--;if(t<0){clearInterval(iv);return;}clock.textContent=String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');},1000);} }
+    // libera el checkout 3:25 después de cargar la pantalla (3:20 del pitch + 5s de tolerancia p/ internet lenta)
+    setTimeout(()=>{
+      if(lock) lock.style.display='none';
+      if(reveal) reveal.style.display='block';
+      if(!counting){ counting=true; startCountdown(); }
+    }, 205000);
+  }
+
+  /* ===== ILUSTRACIONES SVG ===== */
+  function illustration(kind){
+    if(kind==='bars') return il_bars();
+    if(kind==='hose') return il_hose();
+    if(kind==='breath') return il_breath();
+    if(kind==='climb') return il_climb();
+    if(kind==='assemble') return il_assemble();
+    return '';
+  }
+  function il_heart(){return `<svg width="92" height="92" viewBox="0 0 92 92" fill="none"><circle cx="46" cy="46" r="44" stroke="#D7E7EA" stroke-width="2"/><path d="M20 47 H34 L39 34 L47 60 L53 44 L57 47 H72" stroke="#0FA69F" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;}
+  function il_bars(){return `<svg width="150" height="118" viewBox="0 0 150 118"><g stroke-linecap="round">
+    <rect class="il-bar" x="18" y="70" width="20" height="40" rx="5" fill="#0FA69F" style="animation-delay:.05s"/>
+    <rect class="il-bar" x="48" y="48" width="20" height="62" rx="5" fill="#0FA69F" style="animation-delay:.2s"/>
+    <rect class="il-bar" x="78" y="30" width="20" height="80" rx="5" fill="#F0A93B" style="animation-delay:.35s"/>
+    <rect class="il-bar" x="108" y="18" width="20" height="92" rx="5" fill="#E85D38" style="animation-delay:.5s"/>
+    <line x1="10" y1="110" x2="140" y2="110" stroke="#DBE6EA" stroke-width="2"/></g></svg>`;}
+  function il_hose(){return `<svg width="170" height="120" viewBox="0 0 170 120">
+    <defs><clipPath id="hc"><path d="M6 54 h58 q10 0 14 6 q7 -3 14 0 q4 -6 14 -6 h44 v22 h-44 q-10 0 -14 -6 q-7 3 -14 0 q-4 6 -14 6 h-58 z"/></clipPath></defs>
+    <path d="M6 54 h58 q10 0 14 6 q7 -3 14 0 q4 -6 14 -6 h44 v22 h-44 q-10 0 -14 -6 q-7 3 -14 0 q-4 6 -14 6 h-58 z" fill="#E6F5F3" stroke="#0FA69F" stroke-width="2.5"/>
+    <g clip-path="url(#hc)"><rect x="6" y="58" width="70" height="14" fill="#0FA69F" opacity=".35"/></g>
+    <path d="M80 44 q6 16 0 32" stroke="#E85D38" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M96 44 q-6 16 0 32" stroke="#E85D38" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="88" cy="60" rx="4" ry="9" fill="#E85D38"/>
+    <g stroke="#E85D38" stroke-width="3" stroke-linecap="round" class="il-pulse">
+      <line x1="120" y1="60" x2="150" y2="48"/>
+      <line x1="120" y1="64" x2="152" y2="64"/>
+      <line x1="120" y1="68" x2="150" y2="80"/>
+    </g>
+    <circle class="il-pulse" cx="156" cy="46" r="2.5" fill="#E85D38" style="animation-delay:.3s"/>
+    <circle class="il-pulse" cx="159" cy="64" r="2.5" fill="#E85D38" style="animation-delay:.5s"/>
+    <circle class="il-pulse" cx="156" cy="82" r="2.5" fill="#E85D38" style="animation-delay:.7s"/>
+    <text x="88" y="102" font-family="IBM Plex Mono" font-size="9" fill="#8AA1AB" text-anchor="middle">SU CUERPO APRETANDO</text></svg>`;}
+  function il_breath(){return `<svg width="150" height="120" viewBox="0 0 150 120">
+    <circle class="il-ring" cx="75" cy="60" r="44" fill="none" stroke="#0FA69F" stroke-width="2" opacity=".3"/>
+    <circle class="il-ring" cx="75" cy="60" r="32" fill="none" stroke="#0FA69F" stroke-width="2" opacity=".5" style="animation-delay:.4s"/>
+    <path d="M75 44 c-14 -14 -34 4 -34 4 l0 20 c0 12 10 20 20 22 l14 4 14 -4 c10 -2 20 -10 20 -22 l0 -20 s-20 -18 -34 -4 z" fill="#E6F5F3" stroke="#0FA69F" stroke-width="2.5"/>
+    <line x1="75" y1="46" x2="75" y2="94" stroke="#0FA69F" stroke-width="2.5"/></svg>`;}
+  function il_climb(){return `<svg width="150" height="120" viewBox="0 0 150 120">
+    <path class="il-dash" d="M14 104 C50 104 46 60 78 54 C104 49 100 26 134 24" fill="none" stroke="#0FA69F" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="14" cy="104" r="6" fill="#8AA1AB"/>
+    <g><rect x="130" y="10" width="3" height="20" fill="#0A7C77"/><path d="M133 11 l16 5 -16 6 z" fill="#0FA69F"/></g>
+    <circle cx="134" cy="24" r="7" fill="#0FA69F" class="il-pulse"/></svg>`;}
+  function il_assemble(){return `<svg width="150" height="120" viewBox="0 0 150 120">
+    <rect x="46" y="26" width="58" height="70" rx="8" fill="#F6FAFB" stroke="#0FA69F" stroke-width="2.5"/>
+    <line x1="56" y1="44" x2="94" y2="44" stroke="#0FA69F" stroke-width="3" stroke-linecap="round"/>
+    <line x1="56" y1="56" x2="88" y2="56" stroke="#B9D2D8" stroke-width="3" stroke-linecap="round"/>
+    <line x1="56" y1="68" x2="92" y2="68" stroke="#B9D2D8" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="75" cy="82" r="9" fill="#E6F5F3" stroke="#0FA69F" stroke-width="2"/>
+    <circle class="il-ring" cx="75" cy="60" r="52" fill="none" stroke="#0FA69F" stroke-width="1.5" opacity=".3" stroke-dasharray="6 6"/></svg>`;}
+  function il_dial(){return `<svg width="190" height="110" viewBox="0 0 190 110"><path d="M16 100 A80 80 0 0 1 174 100" fill="none" stroke="#1d4a5a" stroke-width="13" stroke-linecap="round"/><path d="M16 100 A80 80 0 0 1 66 30" fill="none" stroke="#0FA69F" stroke-width="13" stroke-linecap="round"/><path d="M66 30 A80 80 0 0 1 124 30" fill="none" stroke="#F0A93B" stroke-width="13"/><path d="M124 30 A80 80 0 0 1 174 100" fill="none" stroke="#D22E24" stroke-width="13" stroke-linecap="round"/></svg>`;}
+  function il_decline(){return `<svg width="100%" height="54" viewBox="0 0 300 54" preserveAspectRatio="none" style="margin-bottom:14px"><path d="M0 12 C60 14 90 30 150 34 C210 38 250 48 300 50" fill="none" stroke="#E85D38" stroke-width="3" stroke-linecap="round" class="il-dash"/><circle cx="300" cy="50" r="5" fill="#E85D38"/></svg>`;}
+
+  return { next, commit, submitCapture, show, restoreProgress };
+})();
+
+// reanuda donde quedó si la página recarga; si no, empieza desde el inicio
+if(!Quiz.restoreProgress()) Quiz.show(0);
+</script>
+</body>
+</html>
